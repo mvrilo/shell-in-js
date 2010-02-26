@@ -1,0 +1,7 @@
+shell-in-js is a beta unix-like shell built in javascript functions.
+
+todo:
+- ajax function for loading others commands in external json file.
+- history of commands entered by pressing the up/down key
+
+GPL v2 License.
