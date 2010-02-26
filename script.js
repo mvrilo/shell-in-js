@@ -29,24 +29,24 @@ function fval(f){
 	field.value = '';
 }
 
-var bajs = {
+var sh = {
 	version : '1.0b',
 	author : 'Murilo Santana',
-	about : "baJS was first intended to be a simple calculator app in command line, similar to unix' /usr/bin/bc from which came the inspiration at first place. After I got started with the project I started to study Goosh which was also the other major inspiration at the begining, but Goosh is written using the New operator which makes the code not so clean, so to speak. baJS is written via literal notation which gets easier to correct bugs and create extensions.",
+	about : "shell-in-js was first intended to be a simple calculator app in command line, similar to unix' /usr/bin/bc from which came the inspiration at first place. After I got started with the project I started to study Goosh which was also the other major inspiration at the begining, but Goosh didn't give me what I needed, so to speak. shell-in-js is written via literal notation which gets easier to correct bugs and create extensions.",
 	init : function(){
 		field.focus();
 		
 		if (window.location.href.indexOf('?c'||'&c') !== -1){
-			return bajs.cmd.clear.run();
+			return sh.cmd.clear.run();
 		}
 
 		if (document.addEventListener) {
-			document.addEventListener('click',bajs.init,true);
-			document.addEventListener('keydown',bajs.key,true);
+			document.addEventListener('click',sh.init,true);
+			document.addEventListener('keydown',sh.key,true);
 		}
 		else {
-			document.attachEvent('onclick',bajs.init);
-			field.attachEvent('onkeydown',bajs.key);
+			document.attachEvent('onclick',sh.init);
+			field.attachEvent('onkeydown',sh.key);
 		}
 		return true;
 	},
@@ -62,15 +62,15 @@ var bajs = {
 				fval(eval(field.value.replace(regpow,'Math.pow($1,$2)')));
 			}
 			else {
-				for (k in bajs.cmd){
-					if (field.value == k || field.value == bajs.cmd[k].alias){
-						return bajs.cmd[k].run();
+				for (k in sh.cmd){
+					if (field.value == k || field.value == sh.cmd[k].alias){
+						return sh.cmd[k].run();
 					}
 					else if (field.value == k + ' info'){
-						return fval(bajs.cmd[k].info);
+						return fval(sh.cmd[k].info);
 					}
 					else if (field.value == k + ' author'){
-						return fval(bajs.cmd[k].author);
+						return fval(sh.cmd[k].author);
 					}
 				}
 			}
@@ -85,8 +85,8 @@ var bajs = {
 	key : function(e){
 		var evt = e.which || e.keyCode;
 		if (evt === 13){
-//			bajs.history.push(field.value);
-			return bajs.args();
+//			sh.history.push(field.value);
+			return sh.args();
 		}
 		//38up:40down
 		return true;
@@ -104,21 +104,21 @@ var bajs = {
 			alias : 'ver',
 			info : "shell's version.",
 			run : function(){
-				fval(bajs.version);
+				fval(sh.version);
 			}
 		},
 		author : {
 			info : "about the developer",
 			alias : '',
 			run : function(){
-				fval('<a href="mailto:mvrilo@gmail.com?subject=bajs">'+bajs.author+'</a>');
+				fval('<a href="mailto:mvrilo@gmail.com?subject=shell-in-js">'+sh.author+'</a>');
 			}
 		},
 		about : {
 			info : "about the shell",
 			alias : '',
 			run : function(){
-				fval(bajs.about);
+				fval(sh.about);
 			}
 		},
 		clear : {
@@ -153,9 +153,9 @@ var bajs = {
 				echo.innerHTML += '>:' + field.value + '<br />';
 
 				var i;
-				for (i in bajs.cmd){
+				for (i in sh.cmd){
 					if (i != 'undefined'){
-						echo.innerHTML += i + ' - ' + bajs.cmd[i].info + '<br />';
+						echo.innerHTML += i + ' - ' + sh.cmd[i].info + '<br />';
 					}
 				}
 				field.value = '';
@@ -168,9 +168,9 @@ var bajs = {
 				echo.innerHTML += '>:' + field.value + '<br />';
 				
 				var i;
-				for (i in bajs.cmd){
-					if (bajs.cmd[i].alias != 'undefined'){
-						echo.innerHTML += i + ' - ' + bajs.cmd[i].alias + '<br />';
+				for (i in sh.cmd){
+					if (sh.cmd[i].alias != 'undefined'){
+						echo.innerHTML += i + ' - ' + sh.cmd[i].alias + '<br />';
 					}
 				}
 				field.value = '';
@@ -206,5 +206,5 @@ var bajs = {
 		}
 	}
 };
-window.onload = bajs.init;
+window.onload = sh.init;
 })();
