@@ -32,7 +32,6 @@ function fval(f){
 var sh = {
 	version : '1.0b',
 	author : 'Murilo Santana',
-	about : "shell-in-js was first intended to be a simple calculator app in command line, similar to unix' /usr/bin/bc from which came the inspiration at first place. After I got started with the project I started to study Goosh which was also the other major inspiration at the begining, but Goosh didn't give me what I needed, so to speak. shell-in-js is written via literal notation which gets easier to correct bugs and create extensions.",
 	init : function(){
 		field.focus();
 		
@@ -52,10 +51,9 @@ var sh = {
 	},
 	args : function(){
 		var k,
-		regpow = /^([0-9]+)\^([0-9]+)$/;
-
+		regpow = /^([\d]+)\^([\d]+)$/;
 		if (field.value.length !== 0){
-			if (field.value.match(/^([\-]?[0-9]+[\-|?\-|\+|?\+|\/|\*|\%]*[0-9]*)*$/)){
+			if (field.value.match(/^([\-]?[\d]+(\.[\d]+)?[\-|?\-|\+|?\+|\/|\*|\%]*[\d]*(\.[\d]+)?)*$/)){
 				fval(eval(field.value));
 			}
 			else if (field.value.match(regpow)){
@@ -70,7 +68,12 @@ var sh = {
 						return fval(sh.cmd[k].info);
 					}
 					else if (field.value == k + ' author'){
-						return fval(sh.cmd[k].author);
+/*						if (sh.cmd[k].author == 'undefined'){
+							return author.run();
+						}
+						else{*/
+							return fval(sh.cmd[k].author);
+//						}
 					}
 				}
 			}
@@ -81,11 +84,11 @@ var sh = {
 		}
 		return true;
 	},
-//	history : [],
+	history : [''],
 	key : function(e){
 		var evt = e.which || e.keyCode;
 		if (evt === 13){
-//			sh.history.push(field.value);
+			sh.history.unshift(field.value);
 			return sh.args();
 		}
 		//38up:40down
@@ -114,13 +117,6 @@ var sh = {
 				fval('<a href="mailto:mvrilo@gmail.com?subject=shell-in-js">'+sh.author+'</a>');
 			}
 		},
-		about : {
-			info : "about the shell",
-			alias : '',
-			run : function(){
-				fval(sh.about);
-			}
-		},
 		clear : {
 			info : 'clear the shell screen',
 			alias : '',
@@ -134,6 +130,7 @@ var sh = {
 			info : 'reset the shell',
 			alias : '',
 			run : function(){
+				sh.history.length = 0;
 				about.style.display = 'block';
 				echo.innerHTML = '';
 				field.value = '';
@@ -154,7 +151,7 @@ var sh = {
 
 				var i;
 				for (i in sh.cmd){
-					if (i != 'undefined'){
+					if (sh.cmd[i].info != 'undefined'){
 						echo.innerHTML += i + ' - ' + sh.cmd[i].info + '<br />';
 					}
 				}
@@ -166,7 +163,6 @@ var sh = {
 			info : 'commands alias',
 			run : function(){
 				echo.innerHTML += '>:' + field.value + '<br />';
-				
 				var i;
 				for (i in sh.cmd){
 					if (sh.cmd[i].alias != 'undefined'){
@@ -176,15 +172,8 @@ var sh = {
 				field.value = '';
 			}
 		},
-		load : {
-			info : 'load other scripts (extension for commands, for example)',
-			alias : '',
-			run : function(){
-				/**/
-			}
-		},
 		refresh : {
-			info : 'refresh the page',
+			info : 'reload the page',
 			alias : 'reload',
 			run : function(){
 				window.location.reload();
@@ -192,16 +181,26 @@ var sh = {
 		},
 		screen : {
 			info : 'display the screen resolution',
-			alias : 'screenresolution',
+			alias : 'resolution',
 			run : function(){
 				fval(window.screen.availWidth + ' x ' + window.screen.availHeight);
+			}
+		},
+		history : {
+			info : 'history list of commands',
+			alias : 'hist',
+			run : function(){
+				sh.history.pop();
+				sh.history.reverse();
+				echo.innerHTML += '>:' + field.value + '<br />' + sh.history.join('<br />') + '<br />';
+				field.value = '';
 			}
 		},
 		math : {
 			info : 'about calculations in shell',
 			alias : 'calc',
 			run : function(){
-				fval("to do Math in this shell just type in the numbers and operators without prefix, e.g. '3+3'");
+				fval("to use the shell as a calculator just type in the numbers and operators without any prefix or suffix, e.g. '3+3','4.3/777', et cetera");
 			}
 		}
 	}
