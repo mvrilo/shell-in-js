@@ -67,14 +67,6 @@ var sh = {
 					else if (field.value == k + ' info'){
 						return fval(sh.cmd[k].info);
 					}
-					else if (field.value == k + ' author'){
-/*						if (sh.cmd[k].author == 'undefined'){
-							return author.run();
-						}
-						else{*/
-							return fval(sh.cmd[k].author);
-//						}
-					}
 				}
 			}
 		}
@@ -84,7 +76,7 @@ var sh = {
 		}
 		return true;
 	},
-	history : [''],
+	history : [],
 	key : function(e){
 		var evt = e.which || e.keyCode;
 		if (evt === 13){
@@ -96,16 +88,16 @@ var sh = {
 	},
 	cmd : {
 		example : {
+			info : "example's info",
 			alias : "example's alias",
 			author : "example's author",
-			info : "example's info",
 			run : function(){
 				fval("example's");
 			}
 		},
 		version : {
+			info : "shell's version",
 			alias : 'ver',
-			info : "shell's version.",
 			run : function(){
 				fval(sh.version);
 			}
@@ -137,15 +129,15 @@ var sh = {
 			}
 		},
 		quit : {
-			alias : 'exit',
 			info : 'exit the shell',
+			alias : 'exit',
 			run : function(){
 				window.close();
 			}
 		},
 		man : {
-			alias : 'help',
 			info : 'list of commands available',
+			alias : 'help',
 			run : function(){ 
 				echo.innerHTML += '>:' + field.value + '<br />';
 
@@ -159,8 +151,8 @@ var sh = {
 			}
 		},
 		alias : {
-			alias : 'aliases',
 			info : 'commands alias',
+			alias : 'aliases',
 			run : function(){
 				echo.innerHTML += '>:' + field.value + '<br />';
 				var i;
@@ -190,7 +182,6 @@ var sh = {
 			info : 'history list of commands',
 			alias : 'hist',
 			run : function(){
-				sh.history.pop();
 				sh.history.reverse();
 				echo.innerHTML += '>:' + field.value + '<br />' + sh.history.join('<br />') + '<br />';
 				field.value = '';
@@ -200,7 +191,14 @@ var sh = {
 			info : 'about calculations in shell',
 			alias : 'calc',
 			run : function(){
-				fval("to use the shell as a calculator just type in the numbers and operators without any prefix or suffix, e.g. '3+3','4.3/777', et cetera");
+				fval("to use the shell as a calculator just type in the numbers and operators <br />without any prefix or suffix, e.g. '3+3','4.3/777', et cetera");
+			}
+		},
+		pi : {
+			info : 'return the value of pi',
+			alias : '&#960;',
+			run : function(){
+				fval(Math.PI);
 			}
 		}
 	}
