@@ -34,6 +34,11 @@ var sh = {
 	author : 'Murilo Santana',
 	init : function(){
 		field.focus();
+		field.setAttribute('autocomplete','off');
+		var a = document.getElementsByTagName('a');
+		for (var i = 0; i<a.length; i++){
+			a[i].setAttribute('target','_blank');
+		}
 		
 		if (window.location.href.indexOf('?c'||'&c') !== -1){
 			return sh.cmd.clear.run();
